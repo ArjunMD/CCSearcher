@@ -1,9 +1,10 @@
+import os
 from flask import Flask, request, render_template
 import pandas as pd
 
 app = Flask(__name__)
 
-# Load the Excel file. Replace 'data.xlsx' with your actual file name.
+# Load the Excel file. Make sure data.xlsx is included in your repository.
 excel_file = 'data.xlsx'
 
 # Read both sheets.
@@ -13,7 +14,6 @@ df_cc = pd.read_excel(excel_file, sheet_name='Complete CC List', engine='openpyx
 @app.route('/', methods=['GET', 'POST'])
 def index():
     query = ''
-    # Initialize as empty DataFrames instead of lists
     results_mcc = pd.DataFrame()
     results_cc = pd.DataFrame()
     
@@ -31,5 +31,9 @@ def index():
     )
 
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0', port=5000)
+    port = int(os.environ.get("PORT", 5000))
+    # It's a good idea to disable debug in production:
+    app.run(debug=False, host='0.0.0.0', port=port)
 
+
+#Above code is for using heroku
